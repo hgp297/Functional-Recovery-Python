@@ -1,0 +1,13 @@
+name: atcpy_env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9.13
+  - pandas
+  - numpy
+  - matplotlib
+  - scipy
+  - ipykernel>=6.9.25
+  - seaborn
+  - pip
