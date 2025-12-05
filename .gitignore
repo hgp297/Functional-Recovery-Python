@@ -18,3 +18,9 @@
 
 # Output folder
 /outputs/
+
+# All new files coming out of buildInputs
+/inputs/example_inputs/*optional_inputs.json
+/inputs/example_inputs/*optional_inputs.py
+/inputs/example_inputs/*simulated_inputs.json
+/inputs/example_inputs/*simulated_inputs.py
