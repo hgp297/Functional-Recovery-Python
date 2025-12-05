@@ -1,6 +1,9 @@
 # Compiled python modules
 *.pyc
 
+# VSCode folders
+/.vscode
+
 # PyCharm folders
 /.idea
 /.cache
