@@ -809,6 +809,34 @@ def convert_pelicun(model_dir):
 
     # HP: missing racked stair doors per story, racked entry doors
 
+    # detect if B203 - exterior doors or C102 interior doors are present
+    
+    # warn if num_exterior_doors does not match general_inputs["num_entry_doors"]
+    # C102 should be restricted to just stair doors, same number as C201 stairs
+
+    # construct
+    # damage_consequences['racked_stair_doors_per_story']: array, num real x num stories
+    #   simulated number of racked stairwell doors at each story
+    # damage_consequences['racked_entry_doors_side_1']: array, num real x 1
+    #   simulated number of racked entry doors on one side of the building
+    # damage_consequences['racked_entry_doors_side_2']: array, num real x 1
+    #   simulated number of racked entry doors on the other side of the building
+
+    # read DMG_sample.csv (cmp-loc-dir-ds)
+
+    # damage_consequences['racked_stair_doors_per_story']: array, num real x num stories
+    #   simulated number of racked stairwell doors at each story
+
+    # number of "C102" cmp, in list index loc, summed for all dir, for ds >= 1
+
+    
+    # damage_consequences['racked_entry_doors_side_1']: array, num real x 1
+    #   simulated number of racked entry doors on one side of the building
+
+    # number of "B203" cmp, loc should be 1, in one dir, for ds >= 1
+
+
+
     if 'engineering_cost_ratio' not in general_inputs:
         eng_cost_ratio = 0.10
     else:
