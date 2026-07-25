@@ -56,7 +56,7 @@ def run_atc138(case_dir: Path, num_iter=1):
     # run analysis
     if num_iter > 1:
         for run_no in range(1, num_iter+1):
-            output_file = f'recovery_outputs_run{run_no}.json'
+            output_file = f'recovery_outputs_{run_no}.json'
             if run_no == 1:
                 atc138.driver.run_analysis(
                     case_dir, output_dir, seed=run_no, output_file=output_file, force_rebuild=True)
