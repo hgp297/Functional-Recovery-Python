@@ -1,0 +1,80 @@
+name: Publish to PyPI
+
+# ┌───────────────────────────────────────────────────────────────────────────┐
+# │ RELEASE POLICY (see README, "Releases"). Publishing a GitHub Release      │
+# │ uploads that version to PyPI. Write the release notes from the CHANGELOG  │
+# │ entry, publish, and the upload follows.                                   │
+# │                                                                           │
+# │ PyPI uploads are immutable, so an upload cannot be repeated for the same  │
+# │ version. Only the `published` event is subscribed to, which fires once;   │
+# │ editing a release afterward does not re-trigger it. If an upload fails    │
+# │ after PyPI has accepted the files, the fix is a new version, not a re-run.│
+# └───────────────────────────────────────────────────────────────────────────┘
+
+on:
+  release:
+    types: [published]
+  # Manual runs build + validate only; the publish job is gated on the release
+  # event, so a dispatch is a safe no-upload dry run (inspect the artifacts
+  # afterward).
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build + validate sdist and wheel
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install build tooling
+        run: pip install build twine
+      - name: Build
+        run: python -m build
+      # Refuse to proceed unless the release tag matches the built version
+      # exactly (tag v1.4 <-> version 1.4, tag v1.4.1 <-> version 1.4.1).
+      # Catches a release cut against a forgotten version bump in
+      # pyproject.toml, which would otherwise upload the wrong version.
+      - name: Verify release tag matches the built version
+        if: github.event_name == 'release'
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          version=$(ls dist/*.whl | sed -E 's|.*/atc138-([^-]+)-py3.*|\1|')
+          echo "Built version: $version   Release tag: $TAG"
+          if [ "$TAG" != "v$version" ]; then
+            echo "::error::Release tag '$TAG' != built version 'v$version'. Refusing to publish."
+            exit 1
+          fi
+      - name: Check package metadata + README rendering
+        run: twine check dist/*
+      - name: Upload the distributions
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    name: Publish to PyPI
+    needs: build
+    # Only a published release uploads; workflow_dispatch stops after `build`.
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    # The `pypi` environment carries a required-reviewer protection rule, so an
+    # upload waits for a human approval in the Actions UI even on a correct tag.
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write # OIDC for PyPI Trusted Publishing -- no stored token.
+    steps:
+      - name: Download the distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Publish to PyPI (Trusted Publishing)
+        uses: pypa/gh-action-pypi-publish@release/v1

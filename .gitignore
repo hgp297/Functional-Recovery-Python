@@ -1,5 +1,13 @@
 # Compiled python modules
 *.pyc
+__pycache__/
+
+# macOS metadata
+.DS_Store
+
+# Build artifacts
+/dist/
+/build/
 
 # VSCode folders
 /.vscode
@@ -30,7 +38,7 @@ outputs/
 Comparison_scripts/
 
 # All new files coming out of buildInputs
-inputs/example_inputs/*/optional_inputs.json
-inputs/example_inputs/*/optional_inputs.py
-inputs/example_inputs/*/simulated_inputs.json
-inputs/example_inputs/*/build_input.py
+examples/*/optional_inputs.json
+examples/*/optional_inputs.py
+examples/*/simulated_inputs.json
+examples/*/build_input.py
