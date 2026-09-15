@@ -1,4 +1,5 @@
-cff-version: 1.0.0
+cff-version: 1.2.0
+type: software
 message: "If you use this software, please cite it as below."
 authors:
 - family-names: "Zaidi"
@@ -21,9 +22,9 @@ authors:
   given-names: "Anne M."
   orcid: "https://orcid.org/0000-0002-4265-055X"
 title: "OpenPBEE/Functional-Recovery-Python"
-version: 1.3.0
-doi: https://doi.org/10.5281/zenodo.20045328
-date-released: 2026-03-31
+version: 1.4
+doi: 10.5281/zenodo.20045327
+date-released: 2026-09-10
 url: "https://github.com/OpenPBEE/Functional-Recovery-Python"
 preferred-citation:
   type: article
@@ -39,7 +40,7 @@ preferred-citation:
   - family-names: "Koliou"
     given-names: "Maria"
     orcid: "https://orcid.org/0000-0002-0686-493X"
-  doi: https://doi.org/10.1177/87552930221081538
+  doi: 10.1177/87552930221081538
   journal: "Earthquake Spectra"
   start: 1972 # First page number
   end: 2007 # Last page number

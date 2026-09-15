@@ -1,6 +1,8 @@
 # Functional-Recovery---Python
 This is translation of Matlab codebase into Python for quantifying building-specific functional recovery and reoccupancy based on a probabilistic performance-based earthquake engineering framework.
 
+Changes to the tool and to the assessment methodology are documented in [CHANGELOG.md](CHANGELOG.md).
+
 ## Requirements
 
 - **Python Version**: 3.9 or later (recommend 3.9)
@@ -259,3 +261,9 @@ python tests/compare_runs.py <reference_dir> <python_output_dir>
 ### Validation Testing Against MATLAB
 
 For detailed guidance on validating the Python implementation against the original MATLAB framework, see [tests/README.md](tests/README.md).
+
+## Releases
+
+Releases are published to PyPI as [`atc138`](https://pypi.org/project/atc138/) and tagged in this repository, with a matching entry in [CHANGELOG.md](CHANGELOG.md). Version numbers carry no trailing zeros, so `1.3` and `1.4`, with a third segment only for a patch release such as `1.4.1`. They track the ATC-138 methodology, not an API contract; the top of the changelog explains what that means for a minor release.
+
+Publishing a GitHub Release starts the publish workflow. It builds the wheel and sdist, refuses to continue if the release tag and the version in `pyproject.toml` disagree, checks the package metadata, and uploads to PyPI through Trusted Publishing once a maintainer approves the deployment. Write the release notes from the matching changelog entry before publishing.
