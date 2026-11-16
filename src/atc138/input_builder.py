@@ -5,6 +5,7 @@ import pandas as pd
 import os
 import re
 import sys
+import warnings
 
 def clean_types(obj):
     """
@@ -151,6 +152,8 @@ def build_simulated_inputs(model_dir):
     missing_comp_ids = sorted(set([cid for cid in comp_list if cid not in valid_fragility_ids]))
 
     if missing_comp_ids:
+        
+        warnings.warn('Skipping components with missing component attributes.')
         print(
             "Warning: skipping components with missing component attributes: "
             + ", ".join(missing_comp_ids)
@@ -657,6 +660,8 @@ def story_mask(location, num_stories):
 
     if "--" in location:
         start, end = map(int, location.split("--"))
+        if end > num_stories:
+            warnings.warn(f"Location '{location}' exceeds {num_stories} stories")
         return (stories >= start) & (stories <= end)
 
     if ',' in location:
@@ -1062,6 +1067,7 @@ def convert_pelicun(model_dir):
         col = meta["column"]
 
         if story not in simulated_damage["story"]:
+            warnings.warn('Components assigned to location not in global location.')
             continue
 
         # Build lookup key (assume sub_id = 1 unless mapping requires otherwise)
@@ -1106,11 +1112,11 @@ def convert_pelicun(model_dir):
 
             frag_matches = comp_ds_list["comp_id"] == frag_id
 
-            for s_idx, is_story in enumerate(story_sel, start=1):
-                if not is_story:
-                    continue
+    for s_idx, is_story in enumerate(story_sel, start=1):
+        if not is_story:
+            continue
 
-            simulated_damage["story"][s_idx]["num_comps"][frag_matches] += theta * comp_conversion.get(frag_id, 1.0)
+        simulated_damage["story"][s_idx]["num_comps"][frag_matches] += theta * comp_conversion.get(frag_id, 1.0)
 
     ############# convert to json-serializable and save
     # Convert numpy arrays to lists 

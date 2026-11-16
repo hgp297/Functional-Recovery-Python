@@ -40,9 +40,9 @@ def run_analysis(input_dir, output_dir,
     start_time = time.time() # For runtime calculation
     
     ''' ######################  Caution ########################'''
-    # Ignoring runtime warnings
-    import warnings
-    warnings.filterwarnings('ignore')
+    # # Ignoring runtime warnings
+    # import warnings
+    # warnings.filterwarnings('ignore')
     ''' ########################################################'''
         
     ## 1. Import Python modules to be used
